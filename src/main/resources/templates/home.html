@@ -5,12 +5,12 @@
 	<nav th:replace="fragments/nav" />
 	<div class="container" style="text-align: center">
 		<h2 th:text="#{welcome.message}"></h2>
-		<h3>Esta es una zona privada la web</h3>
-		<p>
-			Usuario Autenticado como : <b th:inline="text"> <span>
+		<h3 th:text="#{private.zone}"></h3>
+		<p
+			th:text="#{user.identified.as}"> <b th:inline="text"> <span>
 					[[${#httpServletRequest.remoteUser}]] </span></b>
 		</p>
-		<p>Notas del usuario</p>
+		<p th:text="#{user.marks}"></p>
 		<div class="table-responsive">
 			<table class="table table-hover">
 				<thead>
