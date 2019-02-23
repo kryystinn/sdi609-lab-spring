@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.uniovi.entities.*;
 import com.uniovi.services.SecurityService;
 import com.uniovi.services.UsersService;
+import com.uniovi.validators.AddUserValidator;
 import com.uniovi.validators.SignUpFormValidator;
 
 @Controller
@@ -23,6 +24,9 @@ public class UsersController {
 
 	@Autowired
 	private SignUpFormValidator signUpFormValidator;
+	
+	@Autowired
+	private AddUserValidator addUserValidator;
 
 	@RequestMapping("/user/list")
 	public String getListado(Model model) {
@@ -37,7 +41,13 @@ public class UsersController {
 	}
 
 	@RequestMapping(value = "/user/add", method = RequestMethod.POST)
-	public String setUser(@ModelAttribute User user) {
+	public String setUser(@Validated User user, BindingResult result) {
+		addUserValidator.validate(user, result);
+		
+		if (result.hasErrors()) {
+			return "user/add";
+		}
+		
 		usersService.addUser(user);
 		return "redirect:/user/list";
 	}
@@ -68,7 +78,7 @@ public class UsersController {
 		original.setDni(user.getDni());
 		original.setName(user.getName());
 		original.setLastName(user.getLastName());
-		usersService.addUser(user);
+		usersService.addUser(original);
 		return "redirect:/user/details/" + id;
 	}
 
