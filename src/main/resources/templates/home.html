@@ -6,9 +6,8 @@
 	<div class="container" style="text-align: center">
 		<h2 th:text="#{welcome.message}"></h2>
 		<h3 th:text="#{private.zone}"></h3>
-		<p
-			th:text="#{user.identified.as}"> <b th:inline="text"> <span>
-					[[${#httpServletRequest.remoteUser}]] </span></b>
+		<p th:text="#{user.identified.as}">
+			<span sec:authentication="principal.username"  th:inline="text"></span>
 		</p>
 		<p th:text="#{user.marks}"></p>
 		<div class="table-responsive">
@@ -29,8 +28,10 @@
 						<td th:text="${mark.description}">Ejercicio 1</td>
 						<td th:text="${mark.score}">10</td>
 						<td><a th:href="${'/mark/details/' + mark.id}">detalles</a></td>
-						<td><a th:href="${'/mark/edit/' + mark.id}">modificar</a></td>
-						<td><a th:href="${'/mark/delete/' + mark.id}">eliminar</a></td>
+						<td><a sec:authorize="hasRole('ROLE_PROFESSOR')"
+							th:href="${'/mark/edit/' + mark.id}">modificar</a></td>
+						<td><a sec:authorize="hasRole('ROLE_PROFESSOR')"
+							th:href="${'/mark/delete/' + mark.id}">eliminar</a></td>
 					</tr>
 				</tbody>
 			</table>

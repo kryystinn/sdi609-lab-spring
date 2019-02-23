@@ -10,17 +10,20 @@
 			<img src="/img/student-48.png" alt="logo" />
 		</div>
 		<div class="collapse navbar-collapse" id="myNavbar">
-			<ul class="nav navbar-nav">
+			<ul class="nav navbar-nav" sec:authorize="isAuthenticated()">
 				<li><a href="/">Home</a></li>
 				<li id="marks-menu" class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"  ><span th:text="#{marks.management}"></span> <span
 						class="caret"></span></a>
 				</a>
 					<ul class="dropdown-menu">
-						<li><a href="/mark/add" th:text="#{add.mark}"></a></li>
+						<li sec:authorize="hasRole('ROLE_PROFESSOR')">
+						<a href="/mark/add" th:text="#{add.mark}"></a></li>
 						<li><a href="/mark/list" th:text="#{see.marks}"></a></li>
 					</ul></li>
-				<li id="users-menu" class="dropdown"><a class="dropdown-toggle"
+				<li id="users-menu" class="dropdown"
+				sec:authorize="hasRole('ROLE_ADMIN')">
+				<a class="dropdown-toggle"
 					data-toggle="dropdown" href="#" ><span th:text="#{user.management}"></span> <span
 						class="caret"></span></a>
 				</a>
@@ -48,12 +51,20 @@
 						</a></li>
 					</ul></li>
 
-				<li><a href="/signup" th:text="#{signup.message}"> <span
-						class="glyphicon glyphicon-user"></span> <p th:text="#{singup}">
+				<li sec:authorize="!isAuthenticated()"><a href="/signup"
+					th:text="#{signup.message}"> <span
+						class="glyphicon glyphicon-user"></span>
+						<p th:text="#{singup}"></a></li>
+				<li sec:authorize="!isAuthenticated()"><a href="/login"
+					th:text="#{login.message}"> <span
+						class="glyphicon glyphicon-log-in"></span>
+						<p th:text="#{login}">
+					</a>
+				</li>
+				<li sec:authorize="isAuthenticated()"><a href="/logout"> <span
+						class="glyphicon glyphicon-log-out"  th:text="#{disconnect}"></span> 
 				</a></li>
-				<li><a href="/login" th:text="#{login.message}"> <span
-						class="glyphicon glyphicon-log-in"></span> <p th:text="#{login}">
-				</a></li>
+
 			</ul>
 		</div>
 	</div>
