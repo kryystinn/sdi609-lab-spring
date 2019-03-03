@@ -1,12 +1,18 @@
 package com.uniovi.tests;
 
 import static org.junit.Assert.*;
+
+import java.util.List;
+
 import org.junit.*;
 import org.junit.runners.MethodSorters;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.uniovi.tests.pageobjects.PO_HomeView;
+import com.uniovi.tests.pageobjects.PO_LoginView;
+import com.uniovi.tests.pageobjects.PO_NavView;
 import com.uniovi.tests.pageobjects.PO_Properties;
 import com.uniovi.tests.pageobjects.PO_RegisterView;
 import com.uniovi.tests.pageobjects.PO_View;
@@ -99,7 +105,7 @@ public class NotaneitorTests {
 		//Vamos al formulario de registro
 		PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
 		//Rellenamos el formulario.
-		PO_RegisterView.fillForm(driver, "77777778A", "Josefo", "Perez", "77777",
+		PO_RegisterView.fillForm(driver, "77777778L", "Josefo", "Perez", "77777",
 				"77777");
 		//Comprobamos que entramos en la sección privada
 		PO_View.checkElement(driver, "text", "Notas del usuario");
@@ -130,9 +136,76 @@ public class NotaneitorTests {
 				"77777");
 	}
 
-
-
+	//PR07. Loguearse con exito desde el ROl de Usuario, 99999990D, 123456
+	@Test
+	public void PR07() {
+		//Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		//Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "99999990A" , "123456" );
+		//COmprobamos que entramos en la pagina privada de Alumno
+		PO_View.checkElement(driver, "text", "Notas del usuario");
+	}
 	
+	
+	//PR08. Loguearse con exito desde el  ROL profesor ( 99999993D/123456)
+	@Test
+	public void PR08() {
+		//Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		//Rellenamos el formulario
+		PO_LoginView.fillForm(driver, " 99999993D" , "123456" );
+		//Probamos a acceder a la vista Agregar nota
+		//PO_View.checkElement(driver, "text", "Notas del usuario");
+		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'marks-menu')]/a");
+		elementos.get(0).click();
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href, 'mark/add')]");
+		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
+	}
+	
+	//PR09. Loguearse con exito desde el  ROL Administrador (99999988F/123456)
+	@Test
+	public void PR09() {
+		//Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		//Rellenamos el formulario
+		PO_LoginView.fillForm(driver, " 99999988F" , "123456" );
+		//Probamos a acceder a la vista Ver usuarios
+		//PO_View.checkElement(driver, "text", "Notas del usuario");
+		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'users-menu')]/a");
+		elementos.get(0).click();
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href, 'user/list')]");
+		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
+	}
+	
+	//PR10. Loguearse sin exito desde el ROl alumno (99999990A/123456).
+	@Test
+	public void PR10() {
+		//Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		//Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "99999990" , "123456" );
+		//COmprobamos que entramos en la pagina privada de Alumno
+		PO_View.checkElement(driver, "text", "Identifícate");
+		//SeleniumUtils.esperarSegundos(driver, 2);
+	}
+	
+	//PR11. Loguearse con exito desde el ROl de Usuario (99999990A/123456) y desconectarse
+	@Test
+	public void PR11() {
+		//Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		//Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "99999990A" , "123456" );
+		//COmprobamos que entramos en la pagina privada de Alumno
+		PO_View.checkElement(driver, "text", "Notas del usuario");
+		// Nos desconectamos.
+		PO_HomeView.clickOption(driver, "logout", "class", "btn btn-primary");
+		SeleniumUtils.esperarSegundos(driver, 2);
+	}
+
 	
 	
 	
