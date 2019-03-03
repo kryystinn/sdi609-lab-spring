@@ -40,15 +40,18 @@ public class UsersController {
 
 	@RequestMapping(value = "/user/add")
 	public String getUser(Model model) {
+		model.addAttribute("user", new User());
 		model.addAttribute("rolesList", rolesService.getRoles());
 		return "user/add";
 	}
 
 	@RequestMapping(value = "/user/add", method = RequestMethod.POST)
-	public String setUser(@Validated User user, BindingResult result) {
+	public String setUser(Model model, @Validated User user, BindingResult result) {
 		addUserValidator.validate(user, result);
 		
 		if (result.hasErrors()) {
+			model.addAttribute("user", user);
+			model.addAttribute("rolesList", rolesService.getRoles());
 			return "user/add";
 		}
 		

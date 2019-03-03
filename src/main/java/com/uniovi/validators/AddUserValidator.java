@@ -17,7 +17,7 @@ public class AddUserValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> aClass) {
-		return Mark.class.equals(aClass);
+		return User.class.equals(aClass);
 	}
 
 	@Override
